@@ -1,0 +1,124 @@
+{
+  "id": "stt",
+  "name": "SpeechToText",
+  "version": "0.1.0",
+  "pulse": ">=1.6",
+  "description": "Распознавание речи: голосовые в Telegram, микрофон в чатах Пульса, расшифровка записей и видео агентами. OpenAI, Groq, Yandex SpeechKit, свой Whisper-сервер",
+  "permissions": [
+    "speech:provide",
+    "files:open",
+    "network"
+  ],
+  "runtime": {
+    "kind": "python",
+    "entry": "stt_plugin.app:app",
+    "path": "backend",
+    "requirements": "backend/requirements.txt",
+    "health": "/health"
+  },
+  "speech": {
+    "title": "OpenAI, Groq, Yandex SpeechKit, свой сервер"
+  },
+  "ui": {
+    "dist": "ui"
+  },
+  "menu": [
+    {
+      "id": "main",
+      "title": "Распознавание речи",
+      "icon": "bi-mic",
+      "page": "index.html"
+    }
+  ],
+  "settings": {
+    "order": {
+      "type": "string",
+      "title": "Порядок сервисов",
+      "default": "openai, groq, yandex, custom",
+      "description": "Через запятую: openai, groq, yandex, custom. Первый настроенный — основной; не ответил — пробуется следующий"
+    },
+    "openai_api_key": {
+      "type": "string",
+      "title": "OpenAI — API-ключ",
+      "secret": true,
+      "description": "platform.openai.com → API keys"
+    },
+    "openai_model": {
+      "type": "string",
+      "title": "OpenAI — модель",
+      "enum": ["gpt-4o-transcribe", "gpt-4o-mini-transcribe", "whisper-1"],
+      "default": "gpt-4o-transcribe",
+      "description": "whisper-1 отдаёт время фраз (точные субтитры); gpt-4o-* точнее, субтитры — по частям 30 с"
+    },
+    "groq_api_key": {
+      "type": "string",
+      "title": "Groq — API-ключ",
+      "secret": true,
+      "description": "console.groq.com → API Keys; Whisper быстро и дёшево"
+    },
+    "groq_model": {
+      "type": "string",
+      "title": "Groq — модель",
+      "enum": ["whisper-large-v3-turbo", "whisper-large-v3"],
+      "default": "whisper-large-v3-turbo"
+    },
+    "yandex_api_key": {
+      "type": "string",
+      "title": "Yandex SpeechKit — API-ключ",
+      "secret": true,
+      "description": "Ключ сервисного аккаунта с ролью ai.speechkit-stt.user (Yandex Cloud)"
+    },
+    "yandex_folder_id": {
+      "type": "string",
+      "title": "Yandex SpeechKit — каталог (folder id)",
+      "description": "Нужен, если ключ не сервисного аккаунта; обычно можно не задавать"
+    },
+    "custom_url": {
+      "type": "string",
+      "title": "Свой сервер — адрес API",
+      "description": "Совместимый с OpenAI: http://хост:порт/v1 (faster-whisper-server, speaches, vLLM, LocalAI)"
+    },
+    "custom_model": {
+      "type": "string",
+      "title": "Свой сервер — модель",
+      "default": "whisper-1",
+      "description": "Как её называет сервер, например Systran/faster-whisper-large-v3"
+    },
+    "custom_api_key": {
+      "type": "string",
+      "title": "Свой сервер — ключ",
+      "secret": true,
+      "description": "Если сервер его требует"
+    },
+    "language": {
+      "type": "string",
+      "title": "Язык речи",
+      "default": "",
+      "description": "Код: ru, en… Пусто — сервис определит сам (SpeechKit без кода — русский)"
+    },
+    "vocabulary": {
+      "type": "string",
+      "title": "Словарь",
+      "default": "",
+      "description": "Имена и термины через запятую — подсказка модели (OpenAI, Groq, свой сервер): «Пульс, ИТМО, Олег Петров»"
+    },
+    "proxy": {
+      "type": "string",
+      "title": "Прокси для сервисов распознавания",
+      "secret": true,
+      "description": "Если сервис с сервера Пульса недоступен: http://логин:пароль@хост:порт или socks5://хост:порт (свой сервер — напрямую)"
+    },
+    "history_days": {
+      "type": "integer",
+      "title": "Сколько дней хранить текст распознаваний",
+      "default": 30,
+      "description": "Для истории на странице плагина; сами записи не хранятся"
+    }
+  },
+  "skills": [
+    "skills/stt.md"
+  ],
+  "commands": "commands.json",
+  "check": "check",
+  "install": "INSTALL.md"
+}

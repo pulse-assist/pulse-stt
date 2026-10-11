@@ -1,0 +1,40 @@
+[
+  {
+    "name": "transcribe",
+    "description": "Расшифровать аудио или видео любой длины: текст, субтитры (srt, vtt) или текст с метками времени (md). Ждёт до --wait секунд; дольше — вернёт job для pulse stt result",
+    "timeout_sec": 300,
+    "args": [
+      {"name": "file", "type": "file", "required": true, "description": "запись или видео: путь в «Файлах», @yadisk/…, @gdrive/…, вложение чата (путь на сервере)"},
+      {"name": "format", "description": "text (по умолчанию) | srt | vtt | md — текст с метками времени | json — текст и фразы со временем"},
+      {"name": "out", "type": "file-out", "description": "куда сохранить результат (путь в «Файлах»); без него — текст в ответе, до 30 000 символов"},
+      {"name": "language", "description": "язык речи: ru, en…; по умолчанию — из настроек плагина или определить"},
+      {"name": "engine", "description": "только этот сервис: openai | groq | yandex | custom"},
+      {"name": "wait", "description": "сколько секунд ждать (по умолчанию 100, до 280)"}
+    ]
+  },
+  {
+    "name": "result",
+    "description": "Результат расшифровки, которая ещё шла: ждёт до --wait секунд",
+    "timeout_sec": 300,
+    "args": [
+      {"name": "job", "required": true, "description": "job из ответа pulse stt transcribe"},
+      {"name": "wait", "description": "сколько секунд ждать (по умолчанию 100, до 280)"}
+    ]
+  },
+  {
+    "name": "models",
+    "description": "Сервисы распознавания: порядок, модели, что настроено",
+    "args": []
+  },
+  {
+    "name": "history",
+    "description": "Последние распознавания и расход за месяц",
+    "args": [{"name": "limit", "description": "сколько (по умолчанию 10)"}]
+  },
+  {
+    "name": "check",
+    "description": "Проверить подключение по шагам: ffmpeg, прокси, каждый настроенный сервис (ключ, сеть, модель)",
+    "timeout_sec": 120,
+    "args": []
+  }
+]
